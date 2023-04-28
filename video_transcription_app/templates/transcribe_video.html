@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+<h1>Transcibble</h1>
+<form method = "post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="video_url">Video URL</label>
+    <input type = "text" name = "video_url" id = "video_url" required>
+    <br/>
+    <input type = "submit" value = "Transcribe"> 
+    <p>Note: Add url with .mp4 link </p>
+</form>
+
+{% endblock %}
