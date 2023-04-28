@@ -23,25 +23,27 @@ def transcibe_video(request):
         audio_file.close()
 
         # 3. Transcribe audio
-        audio_file = default_storage.open('temp_audio.wav', 'rb')
         r = sr.Recognizer()
         audio_file = AudioSegment.from_file('temp_audio.wav')
-        start_time = 4500
-        end_time = 70000
+        from pydub.utils import make_chunks
+        chunk_size_ms = 10000
+        transcript = ''
+        chunks = make_chunks(audio_file, chunk_size_ms)
+        for i, chunk in enumerate(chunks):
+            chunk_name = f"chunk{i}.wav"
+            chunk.export(chunk_name, format="wav")
+            with sr.AudioFile(chunk_name) as source:
+                audio = r.record(source)
+                try: 
+                    chunk_transcript = r.recognize_google(audio)
+                except Exception as e: 
+                    print(e)
+                    chunk_transcript = ''
+                transcript += chunk_transcript
 
-        audio_segment = audio_file[start_time:end_time]
-        audio_segment.export('temp.wav', format = 'wav')
-        audio = sr.AudioFile('temp.wav')
-        with audio as source:
-            audio = r.record(source)
-            try:
-                transcript = r.recognize_google(audio)
-            except Exception as e:
-                print(e)
-          
         # 4. Save video information and transcript to database
-        # video = Video(video_url=video_url, transcript=transcript)
-        # video.save()
+        video = Video(video_url=video_url, transcript=transcript)
+        video.save()
 
         # 5. Render template with transcription result
         return render(request, 'transcription_result.html', {'transcript': transcript})
