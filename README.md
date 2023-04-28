@@ -1,6 +1,6 @@
 # Transcribble
 
-This is web application that transcribes video into text using Python, Django, SpeechRecognition library
+This is web application that take .mp4 video file and transcribes video into text using Python, Django, SpeechRecognition library 
 
 ## Installation:
 #### 1. Clone the repository
@@ -31,3 +31,12 @@ In Windows: `.\env\Scripts\activate`
 2. The application will download the video and convert it into audio file
 3. The audio file will then be transcribed using SpeechRecogition library
 4. The transcript will be saved to the saved and displayed to the user 
+
+
+## Requirements
+- Python (3.8 or higher)
+- Django (3.2 or higher)
+- SpeechRecognition (3.8.1 or higher)
+- PyDub (0.25.1 or higher)
+- Requests (2.25.1 or higher)
+- FFMpeg (4.2 or higher)
